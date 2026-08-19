@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>火锅食材清单</title>
+<style>
+  :root {
+    --bg: #faf7f2;
+    --card: #ffffff;
+    --text: #3a3a3a;
+    --text-light: #6b6b6b;
+    --border: #ebe5db;
+    --red: #d4380d;
+    --red-bg: #fff2e8;
+    --green: #52c41a;
+    --green-bg: #f6ffed;
+    --blue: #1890ff;
+    --blue-bg: #e6f7ff;
+    --orange: #fa8c16;
+    --orange-bg: #fff7e6;
+    --purple: #722ed1;
+    --purple-bg: #f9f0ff;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    padding: 24px 16px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 36px 20px 28px;
+    background: linear-gradient(135deg, #d4380d 0%, #fa541c 50%, #fa8c16 100%);
+    border-radius: var(--radius);
+    color: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(212,56,13,0.18);
+  }
+  .header h1 { font-size: 1.8rem; letter-spacing: 2px; }
+  .header .subtitle { font-size: 0.9rem; opacity: 0.85; margin-top: 8px; letter-spacing: 1px; }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    scroll-margin-top: 70px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-title .icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .section-title.beef .icon { background: var(--red-bg); }
+  .section-title.veg .icon { background: var(--green-bg); }
+  .section-title.combo .icon { background: var(--blue-bg); }
+  .section-title.tips .icon { background: var(--orange-bg); }
+  .section-title.time .icon { background: var(--purple-bg); }
+  .section-title.ball .icon { background: #e6fffb; color: #0d9488; }
+  .section-title.staple .icon { background: var(--blue-bg); }
+  .section-title.pot .icon { background: var(--green-bg); }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+  th {
+    background: #f5f0e8;
+    font-weight: 700;
+    text-align: left;
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+  th:first-child { border-radius: 6px 0 0 6px; }
+  th:last-child { border-radius: 0 6px 6px 0; }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fcfaf7; }
+
+  /* Category group rows */
+  .cat-row td {
+    background: #faf7f2;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .tag-red { background: var(--red-bg); color: var(--red); }
+  .tag-green { background: var(--green-bg); color: var(--green); }
+  .tag-blue { background: var(--blue-bg); color: var(--blue); }
+  .tag-orange { background: var(--orange-bg); color: var(--orange); }
+  .tag-purple { background: var(--purple-bg); color: var(--purple); }
+
+  .highlight { font-weight: 700; color: var(--red); }
+  .strike { text-decoration: line-through; color: #bbb; }
+
+  /* Callout */
+  .callout {
+    background: var(--red-bg);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 0.88rem;
+    color: var(--red);
+    font-weight: 600;
+  }
+  .callout.blue {
+    background: var(--blue-bg);
+    border-left-color: var(--blue);
+    color: var(--blue);
+  }
+
+  /* Sub-section */
+  .sub-section {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: #fcfaf7;
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+  }
+  .sub-section h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .sub-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .sub-section li {
+    padding: 6px 0;
+    font-size: 0.88rem;
+    padding-left: 20px;
+    position: relative;
+  }
+  .sub-section li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* Speed lookup */
+  .speed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .speed-card {
+    background: #fcfaf7;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .speed-card .food { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .speed-card .where { font-size: 0.82rem; color: var(--text-light); }
+  .speed-card .duration { font-size: 0.82rem; margin-top: 4px; }
+
+  /* Principle banner */
+  .principle {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #fff2e8, #fff7e6);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  /* Sticky nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(6px);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f5f0e8;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav a:hover { background: var(--red-bg); color: var(--red); }
+
+  /* Table wrap (mobile horizontal scroll) */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Theme toggle button */
+  .header { position: relative; }
+  .theme-toggle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.35); transform: scale(1.05); }
+
+  /* Dark theme */
+  :root[data-theme="dark"] {
+    --bg: #1e1e1e;
+    --card: #2a2a2a;
+    --text: #e8e6e3;
+    --text-light: #a8a29a;
+    --border: #3d3d3d;
+    --red: #ff7a45;
+    --red-bg: #3a2418;
+    --green: #73d13d;
+    --green-bg: #1d2b14;
+    --blue: #40a9ff;
+    --blue-bg: #16263a;
+    --orange: #ffa940;
+    --orange-bg: #33260f;
+    --purple: #b37feb;
+    --purple-bg: #2b1f3d;
+  }
+  :root[data-theme="dark"] th { background: #3a3a3a; }
+  :root[data-theme="dark"] .cat-row td,
+  :root[data-theme="dark"] tr:hover td,
+  :root[data-theme="dark"] .sub-section,
+  :root[data-theme="dark"] .speed-card { background: #323232; }
+  :root[data-theme="dark"] .sub-section { border-color: #4a4a4a; }
+  :root[data-theme="dark"] .nav { background: rgba(42,42,42,0.95); }
+  :root[data-theme="dark"] .nav a { background: #3a3a3a; }
+  :root[data-theme="dark"] .nav a:hover { background: var(--red-bg); color: var(--red); }
+  :root[data-theme="dark"] .section-title.ball .icon { background: #0a2e2e; color: #5eead4; }
+  :root[data-theme="dark"] .principle { background: linear-gradient(135deg, #3a2418, #33260f); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    body { padding: 12px 8px; }
+    .header h1 { font-size: 1.4rem; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 8px; }
+    .table-wrap table { min-width: 520px; }
+    .speed-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Print */
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --bg: #fff; --card: #fff; --text: #3a3a3a; --text-light: #6b6b6b; --border: #ebe5db;
+      --red: #d4380d; --red-bg: #fff2e8; --green: #52c41a; --green-bg: #f6ffed;
+      --blue: #1890ff; --blue-bg: #e6f7ff; --orange: #fa8c16; --orange-bg: #fff7e6;
+      --purple: #722ed1; --purple-bg: #f9f0ff;
+    }
+    body { background: #fff; padding: 0; max-width: none; }
+    .section { box-shadow: none; page-break-inside: avoid; }
+    .header { background: #d4380d !important; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <button id="themeToggle" class="theme-toggle" aria-label="切换深浅色模式">🌙</button>
+  <h1>🛒 火锅食材清单</h1>
+  <div class="subtitle">牛羊肉 · 蔬菜 · 丸滑 · 主食 · 锅底蘸料 · 保存方法</div>
+</div>
+
+<!-- 目录导航 -->
+<nav class="nav">
+  <a href="#sec-beef">🥩 牛羊肉</a>
+  <a href="#sec-veg">🥬 蔬菜</a>
+  <a href="#sec-combo">🍱 一人份搭配</a>
+  <a href="#sec-tips">🔑 保存速查</a>
+  <a href="#sec-time">⏱️ 涮煮时间</a>
+  <a href="#sec-ball">🍢 丸滑/内脏</a>
+  <a href="#sec-staple">🍜 主食</a>
+  <a href="#sec-pot">🍲 锅底蘸料</a>
+</nav>
+
+<!-- 一、牛羊肉 -->
+<div class="section" id="sec-beef">
+  <div class="section-title beef">
+    <span class="icon">🥩</span>
+    一、牛羊肉
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>类别</th>
+        <th>部位</th>
+        <th>特点</th>
+        <th>推荐场景</th>
+        <th>保存方法</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 牛肉 · 超市款 -->
+      <tr class="cat-row"><td colspan="5">牛肉 · 超市方便款</td></tr>
+      <tr>
+        <td style="font-weight:700;color:var(--red);">超市款</td>
+        <td><strong>肥牛卷</strong></td>
+        <td>油脂香、易熟、最省心</td>
+        <td><span class="tag tag-red">首选</span> 超市冷柜直接买</td>
+        <td>冷冻 1-2 个月；未拆封直接冻，已拆封用保鲜袋封紧</td>
+      </tr>
+
+      <!-- 牛肉 · 潮汕鲜切 -->
+      <tr class="cat-row"><td colspan="5">牛肉 · 潮汕鲜切（按从瘦到肥的顺序涮）</td></tr>
+      <tr>
+        <td rowspan="11" style="font-weight:700;color:var(--orange);">潮汕鲜切</td>
+        <td><strong>嫩肉</strong></td>
+        <td>瘦肉多、口感滑</td>
+        <td>菜市场/潮汕店现切，最瘦</td>
+        <td>冷藏 1 天吃完；冷冻 1 个月口感稍差</td>
+      </tr>
+      <tr>
+        <td><strong>牛舌</strong></td>
+        <td>脆嫩爽滑</td>
+        <td>潮汕店才有</td>
+        <td>冷冻 1 个月；切薄片</td>
+      </tr>
+      <tr>
+        <td><strong>三花趾</strong></td>
+        <td>前腿腱心、筋花少、弹脆</td>
+        <td>弹牙口感首选</td>
+        <td>同吊龙</td>
+      </tr>
+      <tr>
+        <td><strong>五花趾</strong></td>
+        <td>后腿腱心、筋花密、嚼劲足</td>
+        <td>最弹牙，老板常留的隐藏款</td>
+        <td>同吊龙</td>
+      </tr>
+      <tr>
+        <td><strong>匙柄</strong></td>
+        <td>带细筋、有嚼劲</td>
+        <td>肉铺/潮汕店才有</td>
+        <td>同吊龙</td>
+      </tr>
+      <tr>
+        <td><strong>匙仁</strong></td>
+        <td>细嫩无筋、肥瘦均匀</td>
+        <td>比匙柄更嫩</td>
+        <td>同吊龙</td>
+      </tr>
+      <tr>
+        <td><strong>脖仁（雪花）</strong></td>
+        <td>雪花纹密、入口即化</td>
+        <td><span class="tag tag-purple">最精华</span> 仅占整牛 1%，遇到必点</td>
+        <td>同吊龙，贵价别囤</td>
+      </tr>
+      <tr>
+        <td><strong>吊龙伴</strong></td>
+        <td>比吊龙更嫩</td>
+        <td>老饕之选</td>
+        <td>同吊龙</td>
+      </tr>
+      <tr>
+        <td><strong>吊龙</strong></td>
+        <td>肥瘦相间、极嫩</td>
+        <td><span class="tag tag-purple">进阶</span> 潮汕火锅必点</td>
+        <td>冷冻 1 个月；分 150g/份装，别反复解冻</td>
+      </tr>
+      <tr>
+        <td><strong>肥胼</strong></td>
+        <td>一层瘦一层肥、油香足</td>
+        <td>油脂控首选</td>
+        <td>同吊龙</td>
+      </tr>
+      <tr>
+        <td><strong>胸口朥</strong></td>
+        <td>看似肥油、实则脆爽</td>
+        <td>越煮越脆，牛油香浓</td>
+        <td>冷冻 1-2 个月；切薄片</td>
+      </tr>
+
+      <!-- 羊肉 · 卷装 -->
+      <tr class="cat-row"><td colspan="5">羊肉 · 卷装（超市冷柜）</td></tr>
+      <tr>
+        <td rowspan="4" style="font-weight:700;color:var(--purple);">羊肉卷</td>
+        <td><strong>羔羊肉卷</strong></td>
+        <td>嫩、膻味轻</td>
+        <td><span class="tag tag-red">首选</span> 怕膻的买这个</td>
+        <td>冷冻 1-2 个月；未拆封直接冻</td>
+      </tr>
+      <tr>
+        <td><strong>羊肉卷</strong></td>
+        <td>经典、肥瘦相间</td>
+        <td>常规选择</td>
+        <td>同羔羊肉卷</td>
+      </tr>
+      <tr>
+        <td><strong>高钙羊肉卷</strong></td>
+        <td>带脆骨、口感丰富</td>
+        <td>好吃但稍贵</td>
+        <td>同羔羊肉卷</td>
+      </tr>
+      <tr>
+        <td><strong>太阳卷</strong></td>
+        <td>羊腰脊、外肥内瘦、嫩滑</td>
+        <td>久涮不老</td>
+        <td>同羔羊肉卷</td>
+      </tr>
+
+      <!-- 羊肉 · 鲜切 -->
+      <tr class="cat-row"><td colspan="5">羊肉 · 鲜切（菜市场/涮肉店）</td></tr>
+      <tr>
+        <td rowspan="3" style="font-weight:700;color:var(--blue);">羊鲜切</td>
+        <td><strong>羊上脑</strong></td>
+        <td>肉质最细嫩</td>
+        <td>久涮不老，老少皆宜</td>
+        <td>冷冻 1 个月；分 150g/份</td>
+      </tr>
+      <tr>
+        <td><strong>羊排肉（半边云）</strong></td>
+        <td>肥瘦相间、带奶香</td>
+        <td>懂行食客之选</td>
+        <td>同羊上脑</td>
+      </tr>
+      <tr>
+        <td><strong>黄瓜条</strong></td>
+        <td>精瘦细嫩、几乎无肥</td>
+        <td>低脂需求首选</td>
+        <td>同羊上脑</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    ⚠️ 买原切：配料表只有"牛肉/羊肉"，别买调理肉（含大豆蛋白、卡拉胶）
+  </div>
+
+  <div class="callout blue">
+    💡 潮汕鲜切按"从瘦到肥"顺序涮（嫩肉 → … → 胸口朥），一开场先吃最瘦的，避免被油脂腻到。
+  </div>
+
+  <div class="sub-section">
+    <h3>📌 肉类保存通用技巧</h3>
+    <ul>
+      <li><strong>分装</strong>：买回来按 150g/顿 分装，用保鲜袋/保鲜膜包紧，排出空气</li>
+      <li><strong>解冻</strong>：提前一晚放冷藏，或密封袋泡冷水；❌ 别室温解冻/热水冲</li>
+      <li><strong>反复冻</strong>：最多解冻 1 次，反复冻会柴、细菌暴增</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 二、蔬菜 -->
+<div class="section" id="sec-veg">
+  <div class="section-title veg">
+    <span class="icon">🥬</span>
+    二、蔬菜
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>类别</th>
+        <th>品种</th>
+        <th>特点</th>
+        <th>保存方法</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 叶菜 -->
+      <tr class="cat-row"><td colspan="4">叶菜</td></tr>
+      <tr>
+        <td rowspan="4" style="font-weight:700;color:var(--green);">叶菜</td>
+        <td><strong>娃娃菜</strong></td>
+        <td>甜、耐煮、<span class="highlight">必买</span></td>
+        <td>冷藏 5-7 天；塑料袋扎孔或包厨房纸防潮</td>
+      </tr>
+      <tr>
+        <td><strong>生菜</strong></td>
+        <td>涮 10 秒即吃，清爽</td>
+        <td>冷藏 3-5 天；别洗，吃前再洗</td>
+      </tr>
+      <tr>
+        <td><strong>油麦菜</strong></td>
+        <td>脆嫩</td>
+        <td>同生菜</td>
+      </tr>
+      <tr>
+        <td><strong>茼蒿</strong></td>
+        <td>香气重</td>
+        <td>冷藏 3 天；极易蔫，尽快吃</td>
+      </tr>
+
+      <!-- 菌菇 -->
+      <tr class="cat-row"><td colspan="4">菌菇</td></tr>
+      <tr>
+        <td rowspan="4" style="font-weight:700;color:var(--purple);">菌菇</td>
+        <td><strong>金针菇</strong></td>
+        <td>吸汤、便宜、百搭</td>
+        <td>冷藏 5-7 天；别洗，保持干燥</td>
+      </tr>
+      <tr>
+        <td><strong>香菇</strong></td>
+        <td>提鲜</td>
+        <td>冷藏 7 天；纸袋装比塑料袋好</td>
+      </tr>
+      <tr>
+        <td><strong>平菇</strong></td>
+        <td>滑嫩</td>
+        <td>冷藏 3-5 天</td>
+      </tr>
+      <tr>
+        <td><strong>木耳</strong></td>
+        <td>爽脆</td>
+        <td>干木耳常温；泡发后冷藏 1 天，❌ 别泡超 24 小时</td>
+      </tr>
+
+      <!-- 豆制品 -->
+      <tr class="cat-row"><td colspan="4">豆制品</td></tr>
+      <tr>
+        <td rowspan="3" style="font-weight:700;color:var(--blue);">豆制品</td>
+        <td><strong>嫩豆腐</strong></td>
+        <td>滑嫩</td>
+        <td>冷藏 2-3 天；泡淡盐水每天换水可延长</td>
+      </tr>
+      <tr>
+        <td><strong>冻豆腐</strong></td>
+        <td>吸汤汁更香</td>
+        <td>冷冻 1 个月；买嫩豆腐自己冻更好</td>
+      </tr>
+      <tr>
+        <td><strong>豆皮/腐竹</strong></td>
+        <td>饱腹感强</td>
+        <td>干品常温；泡发后冷藏 1-2 天</td>
+      </tr>
+
+      <!-- 根茎/其他 -->
+      <tr class="cat-row"><td colspan="4">根茎 / 其他</td></tr>
+      <tr>
+        <td rowspan="5" style="font-weight:700;color:var(--orange);">根茎</td>
+        <td><strong>土豆</strong></td>
+        <td>粉糯</td>
+        <td>常温避光 2-3 周；❌ 别放冰箱（淀粉变糖）</td>
+      </tr>
+      <tr>
+        <td><strong>莲藕</strong></td>
+        <td>脆爽</td>
+        <td>冷藏 1 周；泡水里防氧化</td>
+      </tr>
+      <tr>
+        <td><strong>冬瓜</strong></td>
+        <td>清淡解腻</td>
+        <td>切开后冷藏 3-5 天；切口包保鲜膜</td>
+      </tr>
+      <tr>
+        <td><strong>玉米</strong></td>
+        <td>甜、提鲜</td>
+        <td>带皮常温 3 天；剥好冷藏 3 天</td>
+      </tr>
+      <tr>
+        <td><strong>白萝卜</strong></td>
+        <td>久煮入味</td>
+        <td>冷藏 2-3 周；耐存</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- 三、一人份推荐搭配 -->
+<div class="section" id="sec-combo">
+  <div class="section-title combo">
+    <span class="icon">🍱</span>
+    三、一人份推荐搭配（直接抄）
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>类别</th>
+        <th>买这些</th>
+        <th>量</th>
+        <th>保存</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tag tag-red">肉</span></td>
+        <td>肥牛卷 + 羔羊肉卷</td>
+        <td>各 150-200g</td>
+        <td>冷冻，分装</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-green">叶菜</span></td>
+        <td>娃娃菜</td>
+        <td>半颗</td>
+        <td>冷藏，吃前洗</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-purple">菌菇</span></td>
+        <td>金针菇</td>
+        <td>1 把</td>
+        <td>冷藏，别洗</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-blue">豆制品</span></td>
+        <td>冻豆腐</td>
+        <td>半块</td>
+        <td>冷冻/冷藏</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-orange">丸滑</span></td>
+        <td>牛肉丸 / 虾滑</td>
+        <td>2-3 颗 / 半包</td>
+        <td>冷冻，煮前不解冻</td>
+      </tr>
+      <tr>
+        <td>其他</td>
+        <td>土豆 / 玉米</td>
+        <td>1 个 / 半根</td>
+        <td>常温/冷藏</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-green">主食</span></td>
+        <td>红薯粉 / 年糕</td>
+        <td>1 份</td>
+        <td>最后下锅收尾</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout blue">
+    💡 一人食 6-7 样封顶（肉 + 菜 + 丸滑 + 主食），小锅别贪多；主食最后下锅收尾。
+  </div>
+</div>
+
+<!-- 四、保存速查口诀 -->
+<div class="section" id="sec-tips">
+  <div class="section-title tips">
+    <span class="icon">🔑</span>
+    四、保存速查口诀
+  </div>
+  <div class="speed-grid">
+    <div class="speed-card">
+      <div class="food">🥩 肉卷/肉片</div>
+      <div class="where"><span class="tag tag-blue">冷冻</span></div>
+      <div class="duration">⏱ 1-2 个月</div>
+    </div>
+    <div class="speed-card">
+      <div class="food">🥬 叶菜</div>
+      <div class="where"><span class="tag tag-green">冷藏</span></div>
+      <div class="duration">⏱ 3-7 天</div>
+    </div>
+    <div class="speed-card">
+      <div class="food">🍄 菌菇</div>
+      <div class="where"><span class="tag tag-green">冷藏别洗</span></div>
+      <div class="duration">⏱ 5-7 天</div>
+    </div>
+    <div class="speed-card">
+      <div class="food">🧈 豆腐</div>
+      <div class="where"><span class="tag tag-green">冷藏泡盐水</span></div>
+      <div class="duration">⏱ 2-3 天</div>
+    </div>
+    <div class="speed-card">
+      <div class="food">🥔 土豆萝卜</div>
+      <div class="where"><span class="tag tag-orange">常温避光</span></div>
+      <div class="duration">⏱ 2-3 周</div>
+    </div>
+    <div class="speed-card">
+      <div class="food">📄 干木耳腐竹</div>
+      <div class="where"><span class="tag tag-orange">常温干燥</span></div>
+      <div class="duration">⏱ 几个月</div>
+    </div>
+  </div>
+</div>
+
+<!-- 五、涮煮时间速查 -->
+<div class="section" id="sec-time">
+  <div class="section-title time">
+    <span class="icon">⏱️</span>
+    五、涮煮时间速查
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>食材</th>
+        <th>最佳时间</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>潮汕鲜切牛肉</strong></td>
+        <td><span class="tag tag-red">约 8 秒</span></td>
+        <td>变色即捞，别犹豫</td>
+      </tr>
+      <tr>
+        <td><strong>肥牛卷 / 羊肉卷</strong></td>
+        <td><span class="tag tag-orange">10-15 秒</span></td>
+        <td>肉卷散开、卷曲即熟</td>
+      </tr>
+      <tr>
+        <td><strong>手切羊上脑</strong></td>
+        <td><span class="tag tag-orange">约 15 秒</span></td>
+        <td>厚片，比肉卷多涮一会儿</td>
+      </tr>
+      <tr>
+        <td><strong>胸口朥</strong></td>
+        <td><span class="tag tag-orange">30 秒 - 2 分钟</span></td>
+        <td>越煮越脆，别怕久</td>
+      </tr>
+      <tr>
+        <td><strong>毛肚 / 黄喉</strong></td>
+        <td><span class="tag tag-purple">10-20 秒</span></td>
+        <td>七上八下，久涮变老</td>
+      </tr>
+      <tr>
+        <td><strong>牛肉丸 / 虾滑</strong></td>
+        <td><span class="tag tag-blue">浮起后 1-2 分钟</span></td>
+        <td>全熟再吃，煮久更弹</td>
+      </tr>
+      <tr>
+        <td><strong>鸭血</strong></td>
+        <td><span class="tag tag-blue">3-5 分钟</span></td>
+        <td>浮起即熟</td>
+      </tr>
+      <tr>
+        <td><strong>粉丝 / 年糕等主食</strong></td>
+        <td><span class="tag tag-green">3-5 分钟</span></td>
+        <td>最后下锅收尾</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout blue">
+    💡 口诀：先瘦后肥、肉类"七上八下"、宁欠勿老——牛肉老了神仙难救。
+  </div>
+</div>
+
+<!-- 六、丸滑/内脏 -->
+<div class="section" id="sec-ball">
+  <div class="section-title ball">
+    <span class="icon">🍢</span>
+    六、丸滑 / 内脏
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>类别</th>
+        <th>品种</th>
+        <th>特点</th>
+        <th>保存方法</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="cat-row"><td colspan="4">丸滑类</td></tr>
+      <tr>
+        <td rowspan="4" style="font-weight:700;color:var(--blue);">丸滑</td>
+        <td><strong>潮汕牛肉丸</strong></td>
+        <td>弹脆爽口</td>
+        <td>冷冻 3 个月；煮前不用解冻</td>
+      </tr>
+      <tr>
+        <td><strong>牛筋丸</strong></td>
+        <td>爆浆、肉香浓</td>
+        <td>冷冻 3 个月</td>
+      </tr>
+      <tr>
+        <td><strong>虾滑</strong></td>
+        <td>鲜甜弹牙</td>
+        <td>冷冻 1-2 个月；冷藏解冻后再下锅</td>
+      </tr>
+      <tr>
+        <td><strong>鱼豆腐 / 鱼丸</strong></td>
+        <td>百搭、吸汤</td>
+        <td>冷冻 3 个月</td>
+      </tr>
+
+      <tr class="cat-row"><td colspan="4">内脏 / 其他</td></tr>
+      <tr>
+        <td rowspan="5" style="font-weight:700;color:var(--purple);">内脏</td>
+        <td><strong>毛肚</strong></td>
+        <td>爽脆吸味</td>
+        <td>冷藏 1 天；别久泡水</td>
+      </tr>
+      <tr>
+        <td><strong>黄喉</strong></td>
+        <td>脆嫩</td>
+        <td>冷藏 1-2 天</td>
+      </tr>
+      <tr>
+        <td><strong>鸭血</strong></td>
+        <td>滑嫩</td>
+        <td>冷藏 2-3 天；当天买当天吃</td>
+      </tr>
+      <tr>
+        <td><strong>午餐肉</strong></td>
+        <td>香浓百搭</td>
+        <td>未开常温；开罐后冷藏 3 天</td>
+      </tr>
+      <tr>
+        <td><strong>蟹柳</strong></td>
+        <td>甜鲜</td>
+        <td>冷冻 3 个月</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- 七、主食 -->
+<div class="section" id="sec-staple">
+  <div class="section-title staple">
+    <span class="icon">🍜</span>
+    七、主食
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>品种</th>
+        <th>特点</th>
+        <th>保存方法</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>红薯粉 / 粉丝</strong></td>
+        <td>吸汤、久煮不烂</td>
+        <td>干品常温，随吃随泡</td>
+      </tr>
+      <tr>
+        <td><strong>年糕</strong></td>
+        <td>软糯弹牙</td>
+        <td>冷藏 1 周；冷冻 1 个月</td>
+      </tr>
+      <tr>
+        <td><strong>土豆粉 / 宽粉</strong></td>
+        <td>Q 弹耐煮</td>
+        <td>常温；开封后冷藏</td>
+      </tr>
+      <tr>
+        <td><strong>火锅面 / 泡面</strong></td>
+        <td>收尾主食</td>
+        <td>常温</td>
+      </tr>
+      <tr>
+        <td><strong>响铃卷 / 油条</strong></td>
+        <td>吸汤神器，3 秒即软</td>
+        <td>现买现吃，别囤</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- 八、锅底与蘸料 -->
+<div class="section" id="sec-pot">
+  <div class="section-title pot">
+    <span class="icon">🍲</span>
+    八、锅底与蘸料
+  </div>
+  <div class="sub-section">
+    <h3>🍲 锅底怎么选</h3>
+    <div class="table-wrap">
+  <table>
+      <thead>
+        <tr>
+          <th>锅底</th>
+          <th>适合</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>清汤 / 牛骨汤</strong></td>
+          <td>潮汕鲜切、羊肉</td>
+          <td>吃原味，鲜切牛肉标配</td>
+        </tr>
+        <tr>
+          <td><strong>麻辣牛油</strong></td>
+          <td>毛肚、黄喉、鸭血</td>
+          <td>重口味，川渝标配</td>
+        </tr>
+        <tr>
+          <td><strong>番茄 / 菌菇</strong></td>
+          <td>蔬菜、豆制品、丸滑</td>
+          <td>清淡解腻，老人孩子友好</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+  <div class="sub-section">
+    <h3>🥣 三种经典蘸料</h3>
+    <div class="speed-grid">
+      <div class="speed-card">
+        <div class="food">🥜 麻酱碟 · 北派</div>
+        <div class="where">芝麻酱 2 勺 + 腐乳 1 块 + 韭菜花 1 勺 + 少许糖/香油</div>
+        <div class="duration">配涮羊肉、铜锅</div>
+      </div>
+      <div class="speed-card">
+        <div class="food">🌶️ 油碟 · 川渝</div>
+        <div class="where">香油 + 蒜泥 + 蚝油 + 香菜 + 小米辣 + 醋</div>
+        <div class="duration">配麻辣锅、毛肚内脏</div>
+      </div>
+      <div class="speed-card">
+        <div class="food">🦐 沙茶碟 · 潮汕</div>
+        <div class="where">沙茶酱 + 蒜蓉 + 香菜 + 少许小米辣</div>
+        <div class="duration">配潮汕鲜切牛肉</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 核心原则 -->
+<div class="principle">
+  核心原则：肉多冻 · 菜少买 · 现吃现洗 · 分装不反复冻
+</div>
+
+<script>
+(function () {
+  var stored = null;
+  try { stored = localStorage.getItem('hotpot-theme'); } catch (e) {}
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = stored || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  var btn = document.getElementById('themeToggle');
+  function paint() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀️' : '🌙';
+  }
+  paint();
+  btn.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('hotpot-theme', next); } catch (e) {}
+    paint();
+  });
+})();
+</script>
+</body>
+</html>
